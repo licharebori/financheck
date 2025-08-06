@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportes - FinanPro</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .card-hover { transition: transform 0.2s ease; }
+        .card-hover:hover { transform: translateY(-2px); }
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen">
+        <!-- Header -->
+        <div class="bg-white shadow-sm border-b border-gray-200 px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <div class="bg-blue-100 w-10 h-10 rounded-lg flex items-center justify-center mr-3">
+                        <i class="fas fa-chart-bar text-blue-600"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-800">Reportes Financieros</h1>
+                        <p class="text-sm text-gray-600">Análisis detallado de operaciones</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button onclick="exportarReporte()" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-200">
+                        <i class="fas fa-file-excel mr-2"></i>Exportar Excel
+                    </button>
+                    <button onclick="volverDashboard()" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-arrow-left mr-2"></i>Volver
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="p-6">
+            <!-- Filtros de Fecha -->
+            <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Filtros de Período</h3>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Fecha Desde</label>
+                        <input type="date" id="fecha_desde" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Fecha Hasta</label>
+                        <input type="date" id="fecha_hasta" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Divisa</label>
+                        <select id="divisa_filtro" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            <option value="">Todas las divisas</option>
+                            <option value="USD">USD</option>
+                            <option value="EUR">EUR</option>
+                            <option value="USDT">USDT</option>
+                            <option value="BRL">BRL</option>
+                        </select>
+                    </div>
+                    <div class="flex items-end">
+                        <button onclick="generarReporte()" class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-200">
+                            <i class="fas fa-search mr-2"></i>Generar Reporte
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resumen General -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded-xl shadow-sm p-6 card-hover">
+                    <div class="flex items-center">
+                        <div class="bg-green-100 p-3 rounded-lg">
+                            <i class="fas fa-arrow-up text-green-600"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-600">Total Compras</p>
+                            <p class="text-2xl font-bold text-gray-900">$2,450,000</p>
+                            <p class="text-sm text-green-600">+15.3% vs mes anterior</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-sm p-6 card-hover">
+                    <div class="flex items-center">
+                        <div class="bg-red-100 p-3 rounded-lg">
+                            <i class="fas fa-arrow-down text-red-600"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-600">Total Ventas</p>
+                            <p class="text-2xl font-bold text-gray-900">$2,180,000</p>
+                            <p class="text-sm text-red-600">+12.8% vs mes anterior</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-sm p-6 card-hover">
+                    <div class="flex items-center">
+                        <div class="bg-blue-100 p-3 rounded-lg">
+                            <i class="fas fa-dollar-sign text-blue-600"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-600">Ganancia Neta</p>
+                            <p class="text-2xl font-bold text-gray-900">$270,000</p>
+                            <p class="text-sm text-blue-600">+18.5% vs mes anterior</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-sm p-6 card-hover">
+                    <div class="flex items-center">
+                        <div class="bg-purple-100 p-3 rounded-lg">
+                            <i class="fas fa-exchange-alt text-purple-600"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-600">Operaciones</p>
+                            <p class="text-2xl font-bold text-gray-900">1,247</p>
+                            <p class="text-sm text-purple-600">+8.2% vs mes anterior</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gráficos -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <!-- Gráfico de Compras vs Ventas -->
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Compras vs Ventas por Divisa</h3>
+                    <canvas id="comprasVentasChart" width="400" height="200"></canvas>
+                </div>
+                
+                <!-- Gráfico de Ganancias por Divisa -->
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Ganancias por Divisa</h3>
+                    <canvas id="gananciasDivisaChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+
+            <!-- Análisis Detallado por Divisa -->
+            <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Análisis Detallado por Divisa</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                    <!-- USD -->
+                    <div class="bg-gradient-to-br from-green-400 to-green-600 text-white rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="font-bold text-lg">USD</h4>
+                            <i class="fas fa-dollar-sign text-2xl"></i>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between">
+                                <span class="text-sm opacity-90">Compras</span>
+                                <span class="font-bold">$1,200,000</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm opacity-90">Ventas</span>
+                                <span class="font-bold">$1,050,000</span>
+                            </div>
+                            <div class="flex justify-between border-t border-white border-opacity-30 pt-2">
+                                <span class="text-sm opacity-90">Ganancia</span>
+                                <span class="font-bold text-green-200">$150,000</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- EUR -->
+                    <div class="bg-gradient-to-br from-blue-400 to-blue-600 text-white rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="font-bold text-lg">EUR</h4>
+                            <i class="fas fa-euro-sign text-2xl"></i>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between">
+                                <span class="text-sm opacity-90">Compras</span>
+                                <span class="font-bold">€450,000</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm opacity-90">Ventas</span>
+                                <span class="font-bold">€420,000</span>
+                            </div>
+                            <div class="flex justify-between border-t border-white border-opacity-30 pt-2">
+                                <span class="text-sm opacity-90">Ganancia</span>
+                                <span class="font-bold text-blue-200">€30,000</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- USDT -->
+                    <div class="bg-gradient-to-br from-purple-400 to-purple-600 text-white rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="font-bold text-lg">USDT</h4>
+                            <i class="fas fa-coins text-2xl"></i>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between">
+                                <span class="text-sm opacity-90">Compras</span>
+                                <span class="font-bold">$500,000</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm opacity-90">Ventas</span>
+                                <span class="font-bold">$480,000</span>
+                            </div>
+                            <div class="flex justify-between border-t border-white border-opacity-30 pt-2">
+                                <span class="text-sm opacity-90">Ganancia</span>
+                                <span class="font-bold text-purple-200">$20,000</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BRL -->
+                    <div class="bg-gradient-to-br from-yellow-400 to-yellow-600 text-white rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="font-bold text-lg">BRL</h4>
+                            <i class="fas fa-coins text-2xl"></i>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between">
+                                <span class="text-sm opacity-90">Compras</span>
+                                <span class="font-bold">R$300,000</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm opacity-90">Ventas</span>
+                                <span class="font-bold">R$280,000</span>
+                            </div>
+                            <div class="flex justify-between border-t border-white border-opacity-30 pt-2">
+                                <span class="text-sm opacity-90">Ganancia</span>
+                                <span class="font-bold text-yellow-200">R$20,000</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabla Detallada -->
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Divisa</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Compras</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ventas</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ganancia</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Margen %</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Operaciones</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Promedio</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">USD</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$1,200,000</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$1,050,000</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-green-600">$150,000</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">12.5%</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">456</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$2,631</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">EUR</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">€450,000</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">€420,000</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-green-600">€30,000</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">6.7%</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">234</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">€1,923</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">USDT</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$500,000</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$480,000</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-green-600">$20,000</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">4.0%</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">345</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$1,449</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">BRL</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">R$300,000</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">R$280,000</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-green-600">R$20,000</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">6.7%</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">212</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">R$1,415</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Análisis de Rendimiento -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <!-- Top Operaciones -->
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Top 5 Operaciones</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                            <div>
+                                <p class="font-medium text-green-800">Compra USD - Juan Pérez</p>
+                                <p class="text-sm text-green-600">$50,000 USD - $52,500,000 ARS</p>
+                            </div>
+                            <span class="text-sm font-bold text-green-800">$2,500,000</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+                            <div>
+                                <p class="font-medium text-blue-800">Venta EUR - María García</p>
+                                <p class="text-sm text-blue-600">€20,000 EUR - €23,000,000 ARS</p>
+                            </div>
+                            <span class="text-sm font-bold text-blue-800">€3,000,000</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-purple-50 rounded-lg">
+                            <div>
+                                <p class="font-medium text-purple-800">Compra USDT - Carlos López</p>
+                                <p class="text-sm text-purple-600">$25,000 USDT - $25,125,000 ARS</p>
+                            </div>
+                            <span class="text-sm font-bold text-purple-800">$125,000</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-yellow-50 rounded-lg">
+                            <div>
+                                <p class="font-medium text-yellow-800">Venta BRL - Ana Silva</p>
+                                <p class="text-sm text-yellow-600">R$15,000 BRL - R$16,500,000 ARS</p>
+                            </div>
+                            <span class="text-sm font-bold text-yellow-800">R$1,500,000</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-red-50 rounded-lg">
+                            <div>
+                                <p class="font-medium text-red-800">Compra USD - Roberto Díaz</p>
+                                <p class="text-sm text-red-600">$30,000 USD - $31,500,000 ARS</p>
+                            </div>
+                            <span class="text-sm font-bold text-red-800">$1,500,000</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Métricas de Rendimiento -->
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Métricas de Rendimiento</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium text-gray-600">Ganancia Promedio por Operación</span>
+                            <span class="font-bold text-green-600">$216.64</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium text-gray-600">Margen Promedio</span>
+                            <span class="font-bold text-blue-600">7.5%</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium text-gray-600">Operaciones por Día</span>
+                            <span class="font-bold text-purple-600">41.6</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium text-gray-600">Volumen Promedio</span>
+                            <span class="font-bold text-yellow-600">$3,700</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium text-gray-600">ROI Mensual</span>
+                            <span class="font-bold text-green-600">11.0%</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium text-gray-600">Divisa Más Rentable</span>
+                            <span class="font-bold text-blue-600">USD (12.5%)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tendencias y Proyecciones -->
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Tendencias y Proyecciones</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="text-center">
+                        <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-trending-up text-green-600 text-xl"></i>
+                        </div>
+                        <h4 class="font-semibold text-gray-900 mb-2">Tendencia Mensual</h4>
+                        <p class="text-2xl font-bold text-green-600">+15.3%</p>
+                        <p class="text-sm text-gray-600">Crecimiento constante</p>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-chart-line text-blue-600 text-xl"></i>
+                        </div>
+                        <h4 class="font-semibold text-gray-900 mb-2">Proyección Trimestral</h4>
+                        <p class="text-2xl font-bold text-blue-600">$850K</p>
+                        <p class="text-sm text-gray-600">Ganancia estimada</p>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-target text-purple-600 text-xl"></i>
+                        </div>
+                        <h4 class="font-semibold text-gray-900 mb-2">Meta Anual</h4>
+                        <p class="text-2xl font-bold text-purple-600">$3.2M</p>
+                        <p class="text-sm text-gray-600">85% completado</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Variables globales
+        let cotizaciones = {
+            'USD': { compra: 1050, venta: 1080 },
+            'EUR': { compra: 1150, venta: 1180 },
+            'USDT': { compra: 1000, venta: 1005 },
+            'BRL': { compra: 200, venta: 205 }
+        };
+
+        // Functions
+        function volverDashboard() {
+            window.location.href = '/jefe-dashboard.html';
+        }
+
+        function exportarReporte() {
+            console.log('Exportando reporte a Excel...');
+            alert('Reporte exportado exitosamente');
+        }
+
+        function generarReporte() {
+            const fechaDesde = document.getElementById('fecha_desde').value;
+            const fechaHasta = document.getElementById('fecha_hasta').value;
+            const divisa = document.getElementById('divisa_filtro').value;
+            
+            console.log('Generando reporte con filtros:', { fechaDesde, fechaHasta, divisa });
+            
+            // Aquí se actualizarían los datos según los filtros
+            actualizarGraficos();
+        }
+
+        function actualizarGraficos() {
+            // Gráfico de Compras vs Ventas
+            const comprasVentasCtx = document.getElementById('comprasVentasChart').getContext('2d');
+            new Chart(comprasVentasCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['USD', 'EUR', 'USDT', 'BRL'],
+                    datasets: [{
+                        label: 'Compras',
+                        data: [1200000, 450000, 500000, 300000],
+                        backgroundColor: 'rgba(34, 197, 94, 0.8)'
+                    }, {
+                        label: 'Ventas',
+                        data: [1050000, 420000, 480000, 280000],
+                        backgroundColor: 'rgba(239, 68, 68, 0.8)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Gráfico de Ganancias por Divisa
+            const gananciasDivisaCtx = document.getElementById('gananciasDivisaChart').getContext('2d');
+            new Chart(gananciasDivisaCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['USD', 'EUR', 'USDT', 'BRL'],
+                    datasets: [{
+                        data: [150000, 30000, 20000, 20000],
+                        backgroundColor: [
+                            'rgba(34, 197, 94, 0.8)',
+                            'rgba(59, 130, 246, 0.8)',
+                            'rgba(168, 85, 247, 0.8)',
+                            'rgba(245, 158, 11, 0.8)'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        }
+                    }
+                }
+            });
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set default dates (current month)
+            const today = new Date();
+            const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+            const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+            
+            document.getElementById('fecha_desde').value = firstDay.toISOString().split('T')[0];
+            document.getElementById('fecha_hasta').value = lastDay.toISOString().split('T')[0];
+            
+            // Initialize charts
+            actualizarGraficos();
+        });
+
+        // Auto-refresh data every 5 minutes
+        setInterval(() => {
+            console.log('Actualizando datos del reporte...');
+            // Aquí se actualizarían los datos desde el servidor
+        }, 300000);
+    </script>
+</body>
+</html> 

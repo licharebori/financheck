@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nueva Operación - FinanPro</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .card-hover { transition: transform 0.2s ease; }
+        .card-hover:hover { transform: translateY(-2px); }
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen">
+        <!-- Header -->
+        <div class="bg-white shadow-sm border-b border-gray-200 px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <div class="bg-blue-100 w-10 h-10 rounded-lg flex items-center justify-center mr-3">
+                        <i class="fas fa-plus text-blue-600"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-800">Nueva Operación</h1>
+                        <p class="text-sm text-gray-600">Carlos López - Cajero</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button onclick="volverDashboard()" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-arrow-left mr-2"></i>Volver
+                    </button>
+                    <div class="flex items-center space-x-3">
+                        <div class="text-right">
+                            <p class="text-sm font-medium text-gray-700">Cajero</p>
+                            <p class="text-xs text-gray-500">Carlos López</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="p-6">
+            <!-- Cotizaciones en Tiempo Real -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded-xl shadow-sm p-6 card-hover">
+                    <div class="flex items-center">
+                        <div class="bg-green-100 p-3 rounded-lg">
+                            <i class="fas fa-dollar-sign text-green-600"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-600">USD Compra</p>
+                            <p class="text-2xl font-bold text-gray-900">$1,050</p>
+                            <p class="text-sm text-green-600">+2.5%</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-sm p-6 card-hover">
+                    <div class="flex items-center">
+                        <div class="bg-red-100 p-3 rounded-lg">
+                            <i class="fas fa-dollar-sign text-red-600"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-600">USD Venta</p>
+                            <p class="text-2xl font-bold text-gray-900">$1,080</p>
+                            <p class="text-sm text-red-600">+1.8%</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-sm p-6 card-hover">
+                    <div class="flex items-center">
+                        <div class="bg-blue-100 p-3 rounded-lg">
+                            <i class="fas fa-euro-sign text-blue-600"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-600">EUR</p>
+                            <p class="text-2xl font-bold text-gray-900">€1,150</p>
+                            <p class="text-sm text-blue-600">+1.2%</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-sm p-6 card-hover">
+                    <div class="flex items-center">
+                        <div class="bg-purple-100 p-3 rounded-lg">
+                            <i class="fas fa-coins text-purple-600"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-600">USDT</p>
+                            <p class="text-2xl font-bold text-gray-900">$1,000</p>
+                            <p class="text-sm text-purple-600">+0.5%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Formulario de Operación -->
+            <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
+                <h3 class="text-lg font-semibold text-gray-900 mb-6">Detalles de la Operación</h3>
+                
+                <form id="operacion-form" class="space-y-6">
+                    <!-- Tipo de Operación -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de Operación</label>
+                            <div class="flex space-x-4">
+                                <label class="flex items-center">
+                                    <input type="radio" name="tipo_operacion" value="compra" class="mr-2" checked>
+                                    <span class="text-sm font-medium text-green-600">Compra</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" name="tipo_operacion" value="venta" class="mr-2">
+                                    <span class="text-sm font-medium text-red-600">Venta</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Divisa</label>
+                            <select id="divisa" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" required>
+                                <option value="">Seleccionar divisa</option>
+                                <option value="USD">Dólar (USD)</option>
+                                <option value="EUR">Euro (EUR)</option>
+                                <option value="USDT">USDT</option>
+                                <option value="BRL">Real (BRL)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Cliente y Documento -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Cliente</label>
+                            <input type="text" id="cliente" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="Nombre y apellido" required>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">DNI/CUIT</label>
+                            <input type="text" id="documento" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="XX-XXXXXXXX-X" required>
+                        </div>
+                    </div>
+
+                    <!-- Cantidad y Cotización -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Cantidad (Divisa)</label>
+                            <input type="number" id="cantidad_divisa" step="0.01" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="0.00" required>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Cotización</label>
+                            <input type="number" id="cotizacion" step="0.01" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="0.00" required>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Total (ARS)</label>
+                            <input type="number" id="total_ars" step="0.01" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 bg-gray-50" placeholder="0.00" readonly>
+                        </div>
+                    </div>
+
+                    <!-- Método de Pago -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Método de Pago</label>
+                            <select id="metodo_pago" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" required>
+                                <option value="">Seleccionar método</option>
+                                <option value="efectivo">Efectivo</option>
+                                <option value="transferencia">Transferencia</option>
+                                <option value="cheque">Cheque</option>
+                                <option value="crypto">Crypto</option>
+                            </select>
+                        </div>
+                        
+                        <div id="cuenta_container" class="hidden">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Cuenta</label>
+                            <select id="cuenta" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                <option value="">Seleccionar cuenta</option>
+                                <option value="galicia">Banco Galicia</option>
+                                <option value="santander">Banco Santander</option>
+                                <option value="mercadopago">Mercado Pago</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Información Adicional -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Teléfono</label>
+                            <input type="tel" id="telefono" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="+54 11 1234-5678">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                            <input type="email" id="email" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="cliente@email.com">
+                        </div>
+                    </div>
+
+                    <!-- Observaciones -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Observaciones</label>
+                        <textarea id="observaciones" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" rows="3" placeholder="Observaciones adicionales..."></textarea>
+                    </div>
+
+                    <!-- Resumen de la Operación -->
+                    <div class="bg-gray-50 rounded-lg p-6">
+                        <h4 class="font-semibold text-gray-900 mb-4">Resumen de la Operación</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="text-center">
+                                <p class="text-sm text-gray-600">Tipo</p>
+                                <p id="resumen_tipo" class="font-bold text-green-600">Compra</p>
+                            </div>
+                            <div class="text-center">
+                                <p class="text-sm text-gray-600">Divisa</p>
+                                <p id="resumen_divisa" class="font-bold text-gray-900">-</p>
+                            </div>
+                            <div class="text-center">
+                                <p class="text-sm text-gray-600">Total</p>
+                                <p id="resumen_total" class="font-bold text-blue-600">$0.00</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Botones de Acción -->
+                    <div class="flex justify-end space-x-4">
+                        <button type="button" onclick="volverDashboard()" class="px-6 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 transition duration-200">
+                            Cancelar
+                        </button>
+                        <button type="button" onclick="guardarBorrador()" class="px-6 py-2 text-blue-700 bg-blue-100 rounded-lg hover:bg-blue-200 transition duration-200">
+                            <i class="fas fa-save mr-2"></i>Guardar Borrador
+                        </button>
+                        <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200">
+                            <i class="fas fa-check mr-2"></i>Confirmar Operación
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Historial de Operaciones Recientes -->
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Operaciones Recientes</h3>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hora</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tipo</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cliente</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Divisa</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cantidad</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">14:30</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                        Compra
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Juan Pérez</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">USD</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$500</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$540,000</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                        Confirmado
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">14:15</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                        Venta
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">María García</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">EUR</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">€200</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$230,000</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                        Pendiente
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Variables globales
+        let cotizaciones = {
+            'USD': { compra: 1050, venta: 1080 },
+            'EUR': { compra: 1150, venta: 1180 },
+            'USDT': { compra: 1000, venta: 1005 },
+            'BRL': { compra: 200, venta: 205 }
+        };
+
+        // Functions
+        function volverDashboard() {
+            window.location.href = '/cajero-dashboard.html';
+        }
+
+        function guardarBorrador() {
+            console.log('Guardando borrador...');
+            alert('Borrador guardado exitosamente');
+        }
+
+        // Actualizar cotización automáticamente
+        function actualizarCotizacion() {
+            const tipoOperacion = document.querySelector('input[name="tipo_operacion"]:checked').value;
+            const divisa = document.getElementById('divisa').value;
+            
+            if (divisa && cotizaciones[divisa]) {
+                const cotizacion = tipoOperacion === 'compra' ? cotizaciones[divisa].compra : cotizaciones[divisa].venta;
+                document.getElementById('cotizacion').value = cotizacion;
+                calcularTotal();
+            }
+        }
+
+        // Calcular total automáticamente
+        function calcularTotal() {
+            const cantidad = parseFloat(document.getElementById('cantidad_divisa').value) || 0;
+            const cotizacion = parseFloat(document.getElementById('cotizacion').value) || 0;
+            const total = cantidad * cotizacion;
+            
+            document.getElementById('total_ars').value = total.toFixed(2);
+            actualizarResumen();
+        }
+
+        // Actualizar resumen
+        function actualizarResumen() {
+            const tipoOperacion = document.querySelector('input[name="tipo_operacion"]:checked').value;
+            const divisa = document.getElementById('divisa').value;
+            const total = document.getElementById('total_ars').value;
+            
+            document.getElementById('resumen_tipo').textContent = tipoOperacion === 'compra' ? 'Compra' : 'Venta';
+            document.getElementById('resumen_divisa').textContent = divisa || '-';
+            document.getElementById('resumen_total').textContent = total ? `$${total}` : '$0.00';
+            
+            // Cambiar color según tipo
+            const resumenTipo = document.getElementById('resumen_tipo');
+            if (tipoOperacion === 'compra') {
+                resumenTipo.className = 'font-bold text-green-600';
+            } else {
+                resumenTipo.className = 'font-bold text-red-600';
+            }
+        }
+
+        // Mostrar/ocultar campo cuenta según método de pago
+        function toggleCuenta() {
+            const metodoPago = document.getElementById('metodo_pago').value;
+            const cuentaContainer = document.getElementById('cuenta_container');
+            
+            if (metodoPago === 'transferencia' || metodoPago === 'cheque') {
+                cuentaContainer.classList.remove('hidden');
+            } else {
+                cuentaContainer.classList.add('hidden');
+            }
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Event listeners para cambios en el formulario
+            document.querySelectorAll('input[name="tipo_operacion"]').forEach(radio => {
+                radio.addEventListener('change', actualizarCotizacion);
+            });
+            
+            document.getElementById('divisa').addEventListener('change', actualizarCotizacion);
+            document.getElementById('cantidad_divisa').addEventListener('input', calcularTotal);
+            document.getElementById('cotizacion').addEventListener('input', calcularTotal);
+            document.getElementById('metodo_pago').addEventListener('change', toggleCuenta);
+            
+            // Form submission
+            document.getElementById('operacion-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Validaciones
+                const cliente = document.getElementById('cliente').value;
+                const documento = document.getElementById('documento').value;
+                const cantidad = document.getElementById('cantidad_divisa').value;
+                const cotizacion = document.getElementById('cotizacion').value;
+                const metodoPago = document.getElementById('metodo_pago').value;
+                
+                if (!cliente || !documento || !cantidad || !cotizacion || !metodoPago) {
+                    alert('Por favor complete todos los campos obligatorios');
+                    return;
+                }
+                
+                // Simular envío al servidor
+                console.log('Operación confirmada:', {
+                    tipo: document.querySelector('input[name="tipo_operacion"]:checked').value,
+                    divisa: document.getElementById('divisa').value,
+                    cliente: cliente,
+                    documento: documento,
+                    cantidad: cantidad,
+                    cotizacion: cotizacion,
+                    total: document.getElementById('total_ars').value,
+                    metodoPago: metodoPago
+                });
+                
+                alert('Operación confirmada exitosamente');
+                volverDashboard();
+            });
+        });
+
+        // Auto-refresh cotizaciones cada 30 segundos
+        setInterval(() => {
+            console.log('Actualizando cotizaciones...');
+            // Aquí se actualizarían las cotizaciones desde el servidor
+        }, 30000);
+    </script>
+</body>
+</html> 

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rulos - FinanPro</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .card-hover { transition: transform 0.2s ease; }
+        .card-hover:hover { transform: translateY(-2px); }
+        .tab-active { border-color: #3B82F6; color: #3B82F6; }
+        .tab-inactive { border-color: transparent; color: #6B7280; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen">
+        <!-- Header -->
+        <div class="bg-white shadow-sm border-b border-gray-200 px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <div class="bg-blue-100 w-10 h-10 rounded-lg flex items-center justify-center mr-3">
+                        <i class="fas fa-sync-alt text-blue-600"></i>
+                    </div>
+                    <h1 class="text-2xl font-bold text-gray-800">Gestión de Rulos</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button onclick="showRuloModal('A')" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-200">
+                        <i class="fas fa-plus mr-2"></i>Rulo A
+                    </button>
+                    <button onclick="showRuloModal('B')" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-200">
+                        <i class="fas fa-plus mr-2"></i>Rulo B
+                    </button>
+                    <div class="flex items-center space-x-3">
+                        <div class="text-right">
+                            <p class="text-sm font-medium text-gray-700">Usuario Actual</p>
+                            <p class="text-xs text-gray-500">Administrador</p>
+                        </div>
+                        <button class="text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="p-6">
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded-xl shadow-sm p-6 card-hover">
+                    <div class="flex items-center">
+                        <div class="bg-green-100 p-3 rounded-lg">
+                            <i class="fas fa-sync-alt text-green-600"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-600">Rulos Activos</p>
+                            <p class="text-2xl font-bold text-gray-900">8</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-sm p-6 card-hover">
+                    <div class="flex items-center">
+                        <div class="bg-blue-100 p-3 rounded-lg">
+                            <i class="fas fa-dollar-sign text-blue-600"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-600">Ganancia Total</p>
+                            <p class="text-2xl font-bold text-gray-900">$45K</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-sm p-6 card-hover">
+                    <div class="flex items-center">
+                        <div class="bg-purple-100 p-3 rounded-lg">
+                            <i class="fas fa-chart-line text-purple-600"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-600">Promedio Diario</p>
+                            <p class="text-2xl font-bold text-gray-900">$2.5K</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-sm p-6 card-hover">
+                    <div class="flex items-center">
+                        <div class="bg-yellow-100 p-3 rounded-lg">
+                            <i class="fas fa-clock text-yellow-600"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-600">Pendientes</p>
+                            <p class="text-2xl font-bold text-gray-900">3</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rulos Tabs -->
+            <div class="bg-white rounded-xl shadow-sm">
+                <div class="border-b border-gray-200">
+                    <nav class="-mb-px flex space-x-8 px-6" aria-label="Tabs">
+                        <button onclick="switchTab('ruloA')" id="tab-ruloA" class="tab-active whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                            Rulo A
+                        </button>
+                        <button onclick="switchTab('ruloB')" id="tab-ruloB" class="tab-inactive whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                            Rulo B
+                        </button>
+                    </nav>
+                </div>
+                
+                <div class="p-6">
+                    <!-- Rulo A Content -->
+                    <div id="content-ruloA" class="space-y-6">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <!-- Ingresos -->
+                            <div class="bg-gray-50 rounded-lg p-6">
+                                <h3 class="text-lg font-semibold text-gray-900 mb-4">Ingresos por Cuenta</h3>
+                                <div class="space-y-3">
+                                    <div class="flex justify-between items-center p-3 bg-white rounded-lg">
+                                        <span class="font-medium">Banco Galicia</span>
+                                        <span class="text-lg font-bold text-green-600">$125,000</span>
+                                    </div>
+                                    <div class="flex justify-between items-center p-3 bg-white rounded-lg">
+                                        <span class="font-medium">Mercado Pago</span>
+                                        <span class="text-lg font-bold text-green-600">$85,000</span>
+                                    </div>
+                                    <div class="flex justify-between items-center p-3 bg-white rounded-lg">
+                                        <span class="font-medium">Banco Santander</span>
+                                        <span class="text-lg font-bold text-green-600">$65,000</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Egresos -->
+                            <div class="bg-gray-50 rounded-lg p-6">
+                                <h3 class="text-lg font-semibold text-gray-900 mb-4">Egresos por Cuenta</h3>
+                                <div class="space-y-3">
+                                    <div class="flex justify-between items-center p-3 bg-white rounded-lg">
+                                        <span class="font-medium">Banco Galicia</span>
+                                        <span class="text-lg font-bold text-red-600">$110,000</span>
+                                    </div>
+                                    <div class="flex justify-between items-center p-3 bg-white rounded-lg">
+                                        <span class="font-medium">Mercado Pago</span>
+                                        <span class="text-lg font-bold text-red-600">$75,000</span>
+                                    </div>
+                                    <div class="flex justify-between items-center p-3 bg-white rounded-lg">
+                                        <span class="font-medium">Banco Santander</span>
+                                        <span class="text-lg font-bold text-red-600">$55,000</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Ganancia -->
+                        <div class="bg-gradient-to-r from-green-500 to-blue-500 rounded-lg p-6 text-white">
+                            <h3 class="text-lg font-semibold mb-2">Ganancia Generada por Rulo A</h3>
+                            <p class="text-3xl font-bold">$25,000</p>
+                            <p class="text-sm opacity-90">+15.3% vs mes anterior</p>
+                        </div>
+                    </div>
+
+                    <!-- Rulo B Content (Hidden by default) -->
+                    <div id="content-ruloB" class="space-y-6 hidden">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <!-- Ingresos -->
+                            <div class="bg-gray-50 rounded-lg p-6">
+                                <h3 class="text-lg font-semibold text-gray-900 mb-4">Ingresos por Cuenta</h3>
+                                <div class="space-y-3">
+                                    <div class="flex justify-between items-center p-3 bg-white rounded-lg">
+                                        <span class="font-medium">Banco Galicia</span>
+                                        <span class="text-lg font-bold text-green-600">$95,000</span>
+                                    </div>
+                                    <div class="flex justify-between items-center p-3 bg-white rounded-lg">
+                                        <span class="font-medium">Mercado Pago</span>
+                                        <span class="text-lg font-bold text-green-600">$65,000</span>
+                                    </div>
+                                    <div class="flex justify-between items-center p-3 bg-white rounded-lg">
+                                        <span class="font-medium">Banco Santander</span>
+                                        <span class="text-lg font-bold text-green-600">$45,000</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Egresos -->
+                            <div class="bg-gray-50 rounded-lg p-6">
+                                <h3 class="text-lg font-semibold text-gray-900 mb-4">Egresos por Cuenta</h3>
+                                <div class="space-y-3">
+                                    <div class="flex justify-between items-center p-3 bg-white rounded-lg">
+                                        <span class="font-medium">Banco Galicia</span>
+                                        <span class="text-lg font-bold text-red-600">$85,000</span>
+                                    </div>
+                                    <div class="flex justify-between items-center p-3 bg-white rounded-lg">
+                                        <span class="font-medium">Mercado Pago</span>
+                                        <span class="text-lg font-bold text-red-600">$55,000</span>
+                                    </div>
+                                    <div class="flex justify-between items-center p-3 bg-white rounded-lg">
+                                        <span class="font-medium">Banco Santander</span>
+                                        <span class="text-lg font-bold text-red-600">$35,000</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Ganancia -->
+                        <div class="bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg p-6 text-white">
+                            <h3 class="text-lg font-semibold mb-2">Ganancia Generada por Rulo B</h3>
+                            <p class="text-3xl font-bold">$20,000</p>
+                            <p class="text-sm opacity-90">+12.8% vs mes anterior</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Nuevo Rulo -->
+    <div id="ruloModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 hidden">
+        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+            <div class="mt-3">
+                <h3 id="modalTitle" class="text-lg font-medium text-gray-900 mb-4">Nuevo Rulo</h3>
+                <form id="rulo-form" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de Rulo</label>
+                        <select id="ruloType" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" required>
+                            <option value="A">Rulo A</option>
+                            <option value="B">Rulo B</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Cuenta Origen</label>
+                        <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" required>
+                            <option value="">Seleccionar cuenta</option>
+                            <option value="galicia">Banco Galicia</option>
+                            <option value="santander">Banco Santander</option>
+                            <option value="mercadopago">Mercado Pago</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Cuenta Destino</label>
+                        <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" required>
+                            <option value="">Seleccionar cuenta</option>
+                            <option value="galicia">Banco Galicia</option>
+                            <option value="santander">Banco Santander</option>
+                            <option value="mercadopago">Mercado Pago</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Monto</label>
+                        <input type="number" step="0.01" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Ganancia Esperada</label>
+                        <input type="number" step="0.01" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Observaciones</label>
+                        <textarea class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" rows="3"></textarea>
+                    </div>
+                    <div class="flex justify-end space-x-3">
+                        <button type="button" onclick="closeRuloModal()" class="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                            Guardar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showRuloModal(tipo) {
+            document.getElementById('modalTitle').textContent = `Nuevo Rulo ${tipo}`;
+            document.getElementById('ruloType').value = tipo;
+            document.getElementById('ruloModal').classList.remove('hidden');
+        }
+
+        function closeRuloModal() {
+            document.getElementById('ruloModal').classList.add('hidden');
+        }
+
+        function switchTab(tabName) {
+            // Hide all content
+            document.getElementById('content-ruloA').classList.add('hidden');
+            document.getElementById('content-ruloB').classList.add('hidden');
+            
+            // Remove active class from all tabs
+            document.getElementById('tab-ruloA').classList.remove('tab-active');
+            document.getElementById('tab-ruloA').classList.add('tab-inactive');
+            document.getElementById('tab-ruloB').classList.remove('tab-active');
+            document.getElementById('tab-ruloB').classList.add('tab-inactive');
+            
+            // Show selected content and activate tab
+            document.getElementById(`content-${tabName}`).classList.remove('hidden');
+            document.getElementById(`tab-${tabName}`).classList.remove('tab-inactive');
+            document.getElementById(`tab-${tabName}`).classList.add('tab-active');
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('ruloModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeRuloModal();
+            }
+        });
+
+        // Form submission
+        document.getElementById('rulo-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Here you would typically send the data to the API
+            console.log('Rulo guardado');
+            closeRuloModal();
+        });
+    </script>
+</body>
+</html> 
